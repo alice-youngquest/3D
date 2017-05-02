@@ -5,6 +5,7 @@ var crate, crateTexture, crateNormalMap, crateBumpMap
 
 var keyboard = {}
 var player = { height:1.0, speed:0.2, turnSpeed:Math.PI*0.02 }
+var USE_WIREFRAME = false
 
 function init () {
   scene = new THREE.Scene()
@@ -12,10 +13,7 @@ function init () {
 
   mesh = new THREE.Mesh(
     new THREE.BoxGeometry(1, 1, 1),
-    //new THREE.SphereGeometry( 60, 24, 16 ),
-    // new THREE.CylinderGeometry( ... ),
     new THREE.MeshPhongMaterial({color:0xFF3366, wireframe:false})
-    //transparent: true, opacity: 0.5
   )
   mesh.position.y += 1
   mesh.receiveShadow = true
@@ -42,7 +40,7 @@ function init () {
   scene.add(light)
 
   var textureLoader = new THREE.TextureLoader()
-  crateTexture = new TextureLoader.load("crate0/crate0_diffuse.png")
+  crateTexture = new textureLoader.load("crate0/crate0_diffuse.png")
 
   crate = new THREE.Mesh(
     new THREE.BoxGeometry(3,3,3),
