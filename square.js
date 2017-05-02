@@ -2,7 +2,7 @@ var scene, camera, renderer, mesh
 var meshFloor
 
 var keyboard = {}
-var player = { height:1.0, speed:0.2 }
+var player = { height:1.0, speed:0.2, turnSpeed:Math.PI*0.02 }
 
 function init () {
   scene = new THREE.Scene()
@@ -12,25 +12,42 @@ function init () {
     new THREE.BoxGeometry(1, 1, 1),
     //new THREE.SphereGeometry( 60, 24, 16 ),
     // new THREE.CylinderGeometry( ... ),
-    new THREE.MeshBasicMaterial({color:0xFF3366, wireframe:true})
+    new THREE.MeshPhongMaterial({color:0xFF3366, wireframe:false})
     //transparent: true, opacity: 0.5
   )
-
+  mesh.position.y += 1
+  mesh.receiveShadow = true
+  mesh.castShadow = true
   scene.add(mesh)
 
   meshFloor = new THREE.Mesh(
     new THREE.PlaneGeometry(10,10,10,10),
-    new THREE.MeshBasicMaterial({color:0xffffff, wireframe:true})
+    new THREE.MeshPhongMaterial({color:0xffffff, wireframe:false})
   )
 
   meshFloor.rotation.x -= Math.PI / 2
+  meshFloor.receiveShadow = true
   scene.add(meshFloor)
+
+  ambientLight = new THREE.AmbientLight(0xffffff, 0.2)
+  scene.add(ambientLight)
+
+  light = new THREE.PointLight(0xffffff, 0.8, 18)
+  light.position.set(-3,6,-3)
+  light.castShadow = true
+  light.shadow.camera.near = 0.1
+  light.shadow.camera.far = 25
+  scene.add(light)
 
   camera.position.set(0,player.height,-5)
   camera.lookAt(new THREE.Vector3(0,player.height,0))
 
   renderer = new THREE.WebGLRenderer()
   renderer.setSize(1280, 720)
+
+  renderer.shadowMap.enabled = true
+  renderer.shadowMap.type = THREE.BasicShadowMap
+
   document.body.appendChild(renderer.domElement)
 
   animate()
@@ -63,10 +80,10 @@ function animate () {
   }
 
   if(keyboard[37]){ //left arrow key
-    camera.rotation.y -= Math.PI * 0.01
+    camera.rotation.y -= player.turnSpeed
   }
   if(keyboard[39]){ //right arrow key
-    camera.rotation.y += Math.PI * 0.01
+    camera.rotation.y += player.turnSpeed
   }
 
   renderer.render(scene, camera)
