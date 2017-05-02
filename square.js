@@ -1,5 +1,5 @@
 var scene, camera, renderer, mesh
-var meshFloor
+var meshFloor, ambientLight, light
 
 var keyboard = {}
 var player = { height:1.0, speed:0.2, turnSpeed:Math.PI*0.02 }
