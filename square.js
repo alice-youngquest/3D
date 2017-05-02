@@ -52,6 +52,16 @@ function animate () {
     camera.position.z -= Math.cos(camera.rotation.y) * player.speed
   }
 
+  if(keyboard[65]){ //a key
+    camera.position.x += Math.sin(camera.rotation.y + Math.PI/2) * player.speed,
+    camera.position.z += Math.cos(camera.rotation.y + Math.PI/2) * player.speed
+  }
+
+  if(keyboard[68]){ //d key
+    camera.position.x += Math.sin(camera.rotation.y - Math.PI/2) * player.speed,
+    camera.position.z += Math.cos(camera.rotation.y - Math.PI/2) * player.speed
+  }
+
   if(keyboard[37]){ //left arrow key
     camera.rotation.y -= Math.PI * 0.01
   }
