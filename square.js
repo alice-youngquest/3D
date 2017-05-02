@@ -1,6 +1,8 @@
 var scene, camera, renderer, mesh
 var meshFloor, ambientLight, light
 
+var crate, crateTexture, crateNormalMap, crateBumpMap
+
 var keyboard = {}
 var player = { height:1.0, speed:0.2, turnSpeed:Math.PI*0.02 }
 
@@ -21,7 +23,7 @@ function init () {
   scene.add(mesh)
 
   meshFloor = new THREE.Mesh(
-    new THREE.PlaneGeometry(10,10,10,10),
+    new THREE.PlaneGeometry(20,20,10,10),
     new THREE.MeshPhongMaterial({color:0xffffff, wireframe:false})
   )
 
@@ -38,6 +40,21 @@ function init () {
   light.shadow.camera.near = 0.1
   light.shadow.camera.far = 25
   scene.add(light)
+
+  var textureLoader = new THREE.TextureLoader()
+  crateTexture = new TextureLoader.load("crate0/crate0_diffuse.png")
+
+  crate = new THREE.Mesh(
+    new THREE.BoxGeometry(3,3,3),
+    new THREE.MeshPhongMaterial({
+      color:0xffffff,
+      map:crateTexture
+    })
+  )
+  scene.add(crate)
+  crate.position.set(2.5, 3/2, 2.5)
+  crate.receiveShadow = true
+  crate.castShadow = true
 
   camera.position.set(0,player.height,-5)
   camera.lookAt(new THREE.Vector3(0,player.height,0))
