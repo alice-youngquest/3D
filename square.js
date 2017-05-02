@@ -2,7 +2,7 @@ var scene, camera, renderer, mesh
 var meshFloor
 
 var keyboard = {}
-var player = { height:1.0 }
+var player = { height:1.0, speed:0.2 }
 
 function init () {
   scene = new THREE.Scene()
@@ -19,11 +19,11 @@ function init () {
   scene.add(mesh)
 
   meshFloor = new THREE.Mesh(
-    new THREE.PlaneGeometry(10,10),
+    new THREE.PlaneGeometry(10,10,10,10),
     new THREE.MeshBasicMaterial({color:0xffffff, wireframe:true})
   )
 
-  
+  meshFloor.rotation.x -= Math.PI / 2
   scene.add(meshFloor)
 
   camera.position.set(0,player.height,-5)
@@ -41,6 +41,16 @@ function animate () {
 
   mesh.rotation.x += 0.01
   mesh.rotation.y += 0.02
+
+  if(keyboard[87]){ //w key
+    camera.position.x += Math.sin(camera.rotation.y) * player.speed,
+    camera.position.z += Math.cos(camera.rotation.y) * player.speed
+  }
+
+  if(keyboard[83]){ //s key
+    camera.position.x -= Math.sin(camera.rotation.y) * player.speed,
+    camera.position.z -= Math.cos(camera.rotation.y) * player.speed
+  }
 
   if(keyboard[37]){ //left arrow key
     camera.rotation.y -= Math.PI * 0.01
